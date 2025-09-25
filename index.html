@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Regenerative Agriculture Events Calendar</title>
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+  
+  <!-- PWA Meta Tags -->
+  <meta name="theme-color" content="#2e7d32">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="RA Calendar">
+  <meta name="msapplication-TileColor" content="#2e7d32">
+  <meta name="msapplication-config" content="browserconfig.xml">
+  
+  <!-- Apple Touch Icons -->
+  <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152x152.svg">
+  <link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192x192.svg">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192x192.svg">
+  
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>🌾 Regenerative Agriculture Events – California</h1>
+    <p>Curated calendar of upcoming farmer-led agriculture meetings and workshops</p>
+    <div class="event-count-display">
+      <span id="total-count">Total Events: 0</span>
+      <span id="filtered-count">Showing: 0</span>
+    </div>
+  </header>
+
+  <section id="controls">
+    <div class="control-row">
+      <button id="refresh-btn">🔄 Refresh Events</button>
+      <button id="download-btn">📥 Download CSV</button>
+      <button id="print-btn">🖨️ Print View</button>
+    </div>
+
+    <div id="filters">
+      <div class="filter-group">
+        <label for="type-filter">Agriculture Meeting Type:</label>
+        <select id="type-filter">
+          <option value="all">All Types</option>
+          <option value="conference">Conference</option>
+          <option value="workshop">Workshop</option>
+          <option value="field day">Field Day</option>
+          <option value="training">Training</option>
+          <option value="festival">Festival</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="practice-filter">Regenerative Practice:</label>
+        <select id="practice-filter">
+          <option value="all">All Practices</option>
+          <option value="cover crops">Cover Crops</option>
+          <option value="composting">Composting</option>
+          <option value="no-till">No-Till</option>
+          <option value="rotational grazing">Rotational Grazing</option>
+          <option value="soil health">Soil Health</option>
+          <option value="biodiversity">Biodiversity</option>
+          <option value="water conservation">Water Conservation</option>
+          <option value="carbon sequestration">Carbon Sequestration</option>
+          <option value="integrated pest management">Integrated Pest Management</option>
+          <option value="agroforestry">Agroforestry</option>
+          <option value="permaculture">Permaculture</option>
+          <option value="organic">Organic</option>
+          <option value="regenerative">Regenerative</option>
+          <option value="sustainable">Sustainable</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="location-filter">Location:</label>
+        <select id="location-filter">
+          <option value="all">All Locations</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="organization-filter">Organization:</label>
+        <select id="organization-filter">
+          <option value="all">All Organizations</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="date-range">Date Range:</label>
+        <select id="date-range">
+          <option value="all">All Dates</option>
+          <option value="next-week">Next 7 Days</option>
+          <option value="next-month">Next 30 Days</option>
+          <option value="next-quarter">Next 3 Months</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <button id="clear-filters">Clear All Filters</button>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Loading events...</p>
+    </div>
+
+    <div id="error-message" class="error-message" style="display: none;">
+      <p>⚠️ Unable to load events. Please check your internet connection and try again.</p>
+      <button id="retry-btn">Retry</button>
+    </div>
+
+    <div id="no-events" class="no-events" style="display: none;">
+      <p>📅 No events match your current filters.</p>
+      <p>Try adjusting your search criteria or <button id="clear-filters-inline">clear all filters</button>.</p>
+    </div>
+
+    <div id="events-container" class="events-container">
+      <!-- Events will be dynamically loaded here -->
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>About This Calendar</h3>
+        <p>Connecting California farmers with regenerative agriculture education and networking opportunities.</p>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Submit an Event</h3>
+        <p>Know of a regenerative agriculture event? <a href="mailto:events@example.com">Let us know!</a></p>
+      </div>
+      
+      <div class="footer-section">
+        <h3>Stay Updated</h3>
+        <p>Bookmark this page and check back regularly for new events.</p>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; 2024 Regenerative Agriculture Events Calendar. Made with 🌱 for sustainable farming.</p>
+      <div class="footer-links">
+        <a href="#" onclick="showPrivacyPolicy()">Privacy Policy</a>
+        <a href="#" onclick="showTerms()">Terms of Use</a>
+        <a href="mailto:contact@example.com">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Privacy Policy Modal -->
+  <div id="privacy-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('privacy-modal')">&times;</span>
+      <h2>Privacy Policy</h2>
+      <p>This calendar application respects your privacy. We do not collect personal information or use tracking cookies. Event data is sourced from public agricultural organizations and educational institutions.</p>
+    </div>
+  </div>
+
+  <!-- Terms Modal -->
+  <div id="terms-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('terms-modal')">&times;</span>
+      <h2>Terms of Use</h2>
+      <p>This calendar is provided for informational purposes. Event details are subject to change. Please verify event information with organizers before attending.</p>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  
+  <!-- PWA Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then((registration) => {
+            console.log('SW registered: ', registration);
+          })
+          .catch((registrationError) => {
+            console.log('SW registration failed: ', registrationError);
+          });
+      });
+    }
+  </script>
+</body>
+</html>
